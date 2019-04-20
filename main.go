@@ -1,4 +1,5 @@
-package goget
+//go:binary-only-package
+package main
 
 import (
 	"bufio"
