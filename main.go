@@ -27,7 +27,6 @@ func execCommand(commandName string, params []string) bool {
 
 	if err != nil {
 		panic(err)
-		return false
 	}
 
 	_ = cmd.Start()
@@ -55,6 +54,7 @@ func execCommand(commandName string, params []string) bool {
 	return true
 }
 
+// Contains ...
 func Contains(array []string, key string) (index int) {
 	for index, val := range array {
 		if strings.Contains(val, key) {
@@ -75,7 +75,7 @@ func main() {
 	urlIndex := Contains(cmd, "golang.org/x/")
 	if Contains(cmd, "get") != -1 && urlIndex != -1 {
 		url := cmd[urlIndex]
-		cmd[urlIndex] = strings.ReplaceAll(url, "golang.org/x/", "github.com/golang/")
+		cmd[urlIndex] = strings.Replace(url, "golang.org/x/", "github.com/golang/", -1)
 		execCommand(cmd[1], cmd[2:])
 		moveToGoLangDir(cmd[urlIndex])
 		execCommand(originCmd[1], originCmd[2:])
@@ -97,7 +97,7 @@ func move(srcProjectPath, destProjectPath string) {
 func moveToGoLangDir(url string) {
 	goPath, exist := os.LookupEnv("GOPATH")
 	if exist {
-		projectName := strings.Split(strings.ReplaceAll(url, "github.com/golang/", ""), "/")[0]
+		projectName := strings.Split(strings.Replace(url, "github.com/golang/", "", -1), "/")[0]
 		var destProjectPathArr []string
 		destProjectPathArr = append(destProjectPathArr, goPath)
 		destProjectPathArr = append(destProjectPathArr, "src")
